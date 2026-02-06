@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Player Comparison | El-7areefa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="headerContainer">
+  <div class="header">
+    <a href="index.html" class="logo">
+      <img src="images/logo.png">
+    </a>
+    <div class="headerLinks">
+      <a href="index.html">Home</a>
+      <a href="players.html">Players</a>
+    </div>
+  </div>
+</header>
+
+<!-- COMPARISON -->
+<main class="compare-page">
+  <h1>Player Comparison</h1>
+
+  <div class="compare-container" id="compareContainer"></div>
+
+  <p id="errorMsg" style="color:red; font-weight:600; text-align:center;"></p>
+</main>
+
+<!-- FOOTER -->
+<footer class="footerContainer">
+  <div class="footer">
+    © 2026 El-7areefa
+  </div>
+</footer>
+
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+  authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+  projectId: "el-7areefa-ac2fb"
+});
+
+const db = firebase.firestore();
+
+const params = new URLSearchParams(window.location.search);
+const id1 = params.get("id1");
+const id2 = params.get("id2");
+
+if (!id1 || !id2) {
+  document.getElementById("errorMsg").innerText = "Two players required for comparison.";
+} else {
+  Promise.all([
+    db.collection("players").doc(id1).get(),
+    db.collection("players").doc(id2).get()
+  ]).then(([doc1, doc2]) => {
+    if (!doc1.exists || !doc2.exists) {
+      document.getElementById("errorMsg").innerText = "Player not found.";
+      return;
+    }
+
+    renderComparison(doc1.data(), doc2.data());
+  });
+}
+
+function statRow(label, v1, v2) {
+  const winner1 = v1 > v2 ? "winner" : "";
+  const winner2 = v2 > v1 ? "winner" : "";
+
+  return `
+    <div class="stat-row">
+      <span class="${winner1}">${v1}</span>
+      <strong>${label}</strong>
+      <span class="${winner2}">${v2}</span>
+    </div>
+  `;
+}
+
+function renderComparison(p1, p2) {
+  document.getElementById("compareContainer").innerHTML = `
+    <div class="compare-card">
+      <img src="${p1.image}">
+      <h2>${p1.name}</h2>
+      <p>${p1.position} • ${p1.overall}</p>
+    </div>
+
+    <div class="compare-stats">
+      ${statRow("PACE", p1.pace, p2.pace)}
+      ${statRow("SHOOTING", p1.shooting, p2.shooting)}
+      ${statRow("PASSING", p1.passing, p2.passing)}
+      ${statRow("DRIBBLING", p1.dribbling, p2.dribbling)}
+      ${statRow("DEFENDING", p1.defending, p2.defending)}
+      ${statRow("PHYSICAL", p1.physical, p2.physical)}
+    </div>
+
+    <div class="compare-card">
+      <img src="${p2.image}">
+      <h2>${p2.name}</h2>
+      <p>${p2.position} • ${p2.overall}</p>
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>

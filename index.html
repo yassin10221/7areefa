@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- FONTS -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>El-7areefa</title>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div class="headerContainer">
+      <div class="header">
+        <a href="index.html" class="logo">
+          <img src="images/logo.png" alt="logo" />
+        </a>
+        <div class="headerLinks">
+          <a href="index.html">Home</a>
+            <a href="contactUs.html">Contact Us</a>
+            <a href="ranking.html">Ranking</a>
+            <a href="signIn.html" id="registerBtn"><button class="btn">Register</button></a>
+          <button class="btn" onclick="logout()">Logout</button>
+          <p id="userEmail"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LANDING PAGE -->
+    <div class="landingPageContainer">
+      <div class="landingPage">
+        <!-- LEFT SIDE -->
+        <div class="leftSide">
+          <p class="welcome">Welcome to El-7areefa</p>
+          <h1 class="slogan">The professional platform for school football talent</h1>
+          <p class="description">
+            This website is made for students who play football in their school classes.
+            It helps organize matches, showcase players, and vote for top performances,
+            making school football more fun and engaging.
+          </p>
+<div class="searchBar">
+  <input
+    type="text"
+    id="playerSearch"
+    placeholder="Search player name..."
+    oninput="liveSearch()"
+    autocomplete="off"
+  >
+  <div id="searchResults" class="search-results"></div>
+</div>
+
+
+          </div>
+
+        <!-- RIGHT SIDE  -->
+        <div class="imageContainer">
+        <img src="images/banner-image.png" alt="" />
+        </div>
+      </div>
+    </div>
+
+    <!-- TRENDING GAMES SECTION  -->
+    <div class="trendingContainer">
+      <span>Players</span>
+      <div class="trendingHeader">
+        <h1>Attackers</h1>
+      </div>
+      <div class="trendingCard">
+        <!-- TRENDING GAME 1 -->
+        <div class="card">
+          <img src="images/trending-01.png" alt="" class="yassin"/>
+          <div class="cardInfo">
+            <div class="cardName">
+              <p>Yassin Wael</p>
+              <h3>Left Wing</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRENDING GAME 2 -->
+        <div class="card">
+          <img src="images/trending-02.png" alt="" class="yassin"/>
+          <div class="cardInfo">
+            <div class="cardName">
+              <p>Yussuf Ahmed</p>
+              <h3>Left Wing</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRENDING GAME 3 -->
+        <div class="card">
+          <img src="images/hamza.png" alt="" class="yassin" />
+          <div class="cardInfo">
+            <div class="cardName">
+              <p>Hamza Hossam</p>
+              <h3>Right Wing</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRENDING GAME 4 -->
+        <div class="card">
+          <img src="images/trending-04.jpg" alt="" class="yassin"/>
+          <div class="cardInfo">
+            <div class="cardName">
+              <p>Yassin Ramy</p>
+              <h3>Striker</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOST PLAYED SECTION  -->
+    <div class="mostContainer">
+      <div class="mostPlayed">
+        <span>Players</span>
+        <div class="mostHeader">
+          <h1>Midfielders</h1>
+        </div>
+        <div class="mostCards">
+          <!-- CARD 1  -->
+          <div class="card">
+            <div class="cardImg">
+              <img src="images/bassam.png" alt="" class="yassin"/>
+            </div>
+            <div class="cardInfo">
+              <p class="genre">Bassam</p>
+              <h3 class="cardName">CM</h3>
+            </div>
+          </div>
+          <!-- CARD 2  -->
+          <div class="card">
+            <div class="cardImg">
+              <img src="images/yousif_wasseem.png" alt="" class="yassin"/>
+            </div>
+            <div class="cardInfo">
+              <p class="genre">yousif Wasseem</p>
+              <h3 class="cardName">CM</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOP CATEGORIES  -->
+    <div class="trendingContainer">
+      <span>Players</span>
+      <div class="trendingHeader">
+        <h1>Defenders</h1>
+      </div>
+      <div class="trendingCard">
+        <!-- TRENDING GAME 1 -->
+        <div class="card">
+          <img src="images/ali.png" alt="" class="yassin"/>
+          <div class="cardInfo">
+            <div class="cardName">
+              <p>Ali</p>
+              <h3>LB</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRENDING GAME 2 -->
+        <div class="card">
+          <img src="images/malek.png.jpg" alt="" class="yassin"/>
+          <div class="cardInfo">
+            <div class="cardName">
+              <p>Malek</p>
+              <h3>CB</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRENDING GAME 3 -->
+        <div class="card">
+          <img src="images/abdelrahman.png" alt="" class="yassin"/>
+          <div class="cardInfo">
+            <div class="cardName">
+              <p>Abdelrahman</p>
+              <h3>CB</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRENDING GAME 4 -->
+        <div class="card">
+          <img src="images/trending-04.jpg" alt="" class="yassin"/>
+          <div class="cardInfo">
+            <div class="cardName">
+              <p>Omar</p>
+              <h3>RB</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- BROWSE PLAYERS -->
+<div class="trendingContainer">
+  <span>Players</span>
+  <div class="trendingHeader">
+    <h1>Browse All Players</h1>
+<a href="players.html" class="view-all-btn">
+  View All Players →
+</a>
+  </div>
+
+  <div class="trendingCard" id="homePlayers"></div>
+</div>
+
+    <!-- FOOTER  -->
+    <div class="footerContainer">
+      <div class="footer">
+        copyright &copy; 2026 El-7areefa. All rights reserved. Design:
+        TemplateMo
+      </div>
+    </div>
+
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+    authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+    projectId: "el-7areefa-ac2fb"
+  };
+    firebase.initializeApp(firebaseConfig);
+</script>
+<script>
+  const db = firebase.firestore();
+</script>
+
+<script>
+function liveSearch() {
+  const input = document.getElementById("playerSearch").value.toLowerCase().trim();
+  const resultsBox = document.getElementById("searchResults");
+
+  resultsBox.innerHTML = "";
+
+  if (input.length < 2) {
+    resultsBox.style.display = "none";
+    return;
+  }
+
+  db.collection("players")
+    .where("nameLower", ">=", input)
+    .where("nameLower", "<=", input + "\uf8ff")
+    .limit(5)
+    .get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        resultsBox.innerHTML = `<div class="no-results">No players found</div>`;
+        resultsBox.style.display = "block";
+        return;
+      }
+
+      snapshot.forEach(doc => {
+        const p = doc.data();
+
+        resultsBox.innerHTML += `
+          <div class="search-item" onclick="goToPlayer('${doc.id}')">
+            <img src="${p.image}" />
+            <div class="info">
+              <span>${p.name}</span>
+              <small>${p.position} • ${p.overall}</small>
+            </div>
+          </div>
+        `;
+      });
+
+      resultsBox.style.display = "block";
+    });
+}
+
+function goToPlayer(id) {
+  window.location.href = "player.html?id=" + id;
+}
+</script>
+
+<script>
+firebase.auth().onAuthStateChanged(user => {
+  const emailText = document.getElementById("userEmail");
+  const registerBtn = document.getElementById("registerBtn");
+  const logoutBtn = document.querySelector("button[onclick='logout()']");
+
+  if (user) {
+    emailText.innerText = "Logged in as: " + user.email;
+    registerBtn.style.display = "none";
+    logoutBtn.style.display = "inline-block";
+  } else {
+    emailText.innerText = "";
+    registerBtn.style.display = "inline-block";
+    logoutBtn.style.display = "none";
+  }
+});
+</script>
+
+<script>
+function logout() {
+  firebase.auth().signOut().then(() => {
+    window.location.href = "login.html";
+  });
+}
+</script>
+
+<script>
+const homePlayers = document.getElementById("homePlayers");
+
+db.collection("players").limit(4).get().then(snapshot => {
+  snapshot.forEach(doc => {
+    const p = doc.data();
+
+    homePlayers.innerHTML += `
+      <div class="card" onclick="openPlayer('${doc.id}')">
+        <img src="${p.image}" class="yassin">
+        <div class="cardInfo">
+          <div class="cardName">
+            <p>${p.name}</p>
+            <h3>${p.position} • ${p.overall}</h3>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+});
+
+function openPlayer(id) {
+  window.location.href = "player.html?id=" + id;
+}
+</script>
+
+  </body>
+</html>

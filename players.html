@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Players | El-7areefa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="headerContainer">
+  <div class="header">
+    <a href="index.html" class="logo">
+      <img src="images/logo.png">
+    </a>
+    <div class="headerLinks">
+      <a href="index.html">Home</a>
+      <a href="contactUs.html">Contact Us</a>
+      <a href="ranking.html">Ranking</a>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="players-page">
+
+  <h1>All Players</h1>
+
+  <!-- FILTER -->
+  <select id="positionFilter">
+    <option value="">All Positions</option>
+    <option value="ST">Striker</option>
+    <option value="LW">Left Wing</option>
+    <option value="RW">Right Wing</option>
+    <option value="CM">Midfielder</option>
+    <option value="CB">Center Back</option>
+    <option value="LB">Left Back</option>
+    <option value="RB">Right Back</option>
+  </select>
+
+  <div class="players-grid" id="playersGrid"></div>
+
+</main>
+
+<!-- FIREBASE LOGIC -->
+<script>
+  // 🔥 Firebase Init
+  firebase.initializeApp({
+    apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+    authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+    projectId: "el-7areefa-ac2fb"
+  });
+
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+
+  const grid = document.getElementById("playersGrid");
+  const filter = document.getElementById("positionFilter");
+
+  // LOAD PLAYERS
+  function loadPlayers(position = "") {
+    grid.innerHTML = "";
+
+    let query = db.collection("players");
+    if (position) query = query.where("position", "==", position);
+
+    query.get().then(snapshot => {
+      snapshot.forEach(doc => {
+        const p = doc.data();
+
+        grid.innerHTML += `
+          <div class="player-card">
+            <img src="${p.image}">
+            <h3>${p.name}</h3>
+            <p>${p.position} • ${p.overall}</p>
+            <p>⭐ Votes: ${p.votes || 0}</p>
+
+          <div class="card-actions">
+  <button onclick="openPlayer('${doc.id}')">View</button>
+  <button onclick="addToCompare('${doc.id}')">Compare ⚔️</button>
+  <button onclick="votePlayer('${doc.id}')">Vote ⭐</button>
+</div>
+
+        `;
+      });
+    });
+  }
+
+  filter.addEventListener("change", () => {
+    loadPlayers(filter.value);
+  });
+
+  function openPlayer(id) {
+    window.location.href = "player.html?id=" + id;
+  }
+
+  // VOTING SYSTEM (1 vote per user)
+  function votePlayer(playerId) {
+    const user = auth.currentUser;
+
+    if (!user) {
+      alert("You must be logged in to vote");
+      return;
+    }
+
+    const voteDocId = playerId + "_" + user.uid;
+    const voteRef = db.collection("votes").doc(voteDocId);
+
+    voteRef.get().then(doc => {
+      if (doc.exists) {
+        alert("You already voted for this player");
+        return;
+      }
+
+      // Save vote
+      voteRef.set({
+        playerId: playerId,
+        userId: user.uid,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      // Increase vote count
+      db.collection("players").doc(playerId).update({
+        votes: firebase.firestore.FieldValue.increment(1)
+      });
+
+      alert("Vote submitted successfully ⭐");
+      loadPlayers(filter.value);
+    });
+  }
+
+  loadPlayers();
+</script>
+
+<script>
+let compareList = [];
+
+function addToCompare(playerId) {
+  if (compareList.includes(playerId)) return;
+
+  if (compareList.length >= 2) {
+    alert("You can compare only 2 players");
+    return;
+  }
+
+  compareList.push(playerId);
+
+  if (compareList.length === 1) {
+    alert("Player 1 selected. Choose another player to compare.");
+  }
+
+  if (compareList.length === 2) {
+    window.location.href =
+      `compare.html?id1=${compareList[0]}&id2=${compareList[1]}`;
+  }
+}
+</script>
+
+</body>
+</html>

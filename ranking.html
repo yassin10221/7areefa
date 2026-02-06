@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Player Rankings | El-7areefa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="headerContainer">
+  <div class="header">
+    <a href="index.html" class="logo">
+      <img src="images/logo.png">
+    </a>
+    <div class="headerLinks">
+      <a href="index.html">Home</a>
+      <a href="players.html">Players</a>
+      <a href="ranking.html">Ranking</a>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="players-page">
+
+  <h1>Top Player Rankings</h1>
+
+  <!-- FILTER -->
+  <select id="positionFilter">
+    <option value="">All Positions</option>
+    <option value="ST">Striker</option>
+    <option value="LW">Left Wing</option>
+    <option value="RW">Right Wing</option>
+    <option value="CM">Midfielder</option>
+    <option value="CB">Defender</option>
+  </select>
+
+  <div class="players-grid" id="rankingGrid"></div>
+
+</main>
+
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+  authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+  projectId: "el-7areefa-ac2fb"
+});
+
+const db = firebase.firestore();
+const grid = document.getElementById("rankingGrid");
+const filter = document.getElementById("positionFilter");
+
+function loadRanking(position = "") {
+  grid.innerHTML = "";
+
+  let query = db.collection("players")
+                .orderBy("overall", "desc")
+                .limit(20);
+
+  if (position) {
+    query = query.where("position", "==", position);
+  }
+
+  query.get().then(snapshot => {
+    let rank = 1;
+
+    snapshot.forEach(doc => {
+      const p = doc.data();
+
+      grid.innerHTML += `
+        <div class="player-card" onclick="openPlayer('${doc.id}')">
+          <span class="rank-badge">#${rank}</span>
+          <img src="${p.image}">
+          <h3>${p.name}</h3>
+          <p>${p.position} • ${p.overall}</p>
+        </div>
+      `;
+
+      rank++;
+    });
+  });
+}
+
+filter.addEventListener("change", () => {
+  loadRanking(filter.value);
+});
+
+function openPlayer(id) {
+  window.location.href = "player.html?id=" + id;
+}
+
+loadRanking();
+</script>
+
+</body>
+</html>

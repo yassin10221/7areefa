@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | El-7areefa</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="headerContainer">
+    <div class="header">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="El-7areefa Logo" />
+      </a>
+      <div class="headerLinks">
+        <a href="index.html">Home</a>
+        <a href="contactUs.html">Contact Us</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- REGISTER SECTION -->
+  <main>
+    <section class="formContainer">
+      <form>
+        <h2 style="text-align:center;">Create Your Account</h2>
+        <p style="text-align:center; color:gray;">
+          Join El-7areefa and showcase your football talent.
+        </p>
+
+        <input type="text" id="name" placeholder="Full Name" required />
+<input type="email" id="email" placeholder="Email Address" required />
+<input type="password" id="password" placeholder="Password" required />
+
+<button class="btn" type="button" onclick="registerUser()">Create Account</button>
+
+        <p style="text-align:center; font-size:14px;">
+          Already have an account? <a href="login.html" style="color:#0171F9;">Login</a>
+        </p>
+      </form>
+    </section>
+  </main>
+
+
+
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<!-- Firebase + Logic -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  // 🔴 FIREBASE CONFIG (keep yours)
+  const firebaseConfig = {
+    apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+    authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+    projectId: "el-7areefa-ac2fb"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // 🔵 EMAILJS INIT
+  emailjs.init("WrWQshub0p73aBKEa");
+
+  // ✅ REGISTER FUNCTION
+  window.registerUser = function () {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+
+        // 📧 SEND EMAIL TO YOU
+        emailjs.send(
+          "el-7areefa",
+          "template_jov74og",
+          {
+            name: name,
+            email: email
+          }
+        );
+
+        alert("Account created successfully!");
+        signOut(auth); // LOG OUT AFTER REGISTER
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+  };
+</script>
+
+</body>
+
+  <!-- FOOTER -->
+  <footer class="footerContainer">
+    <div class="footer">
+      Copyright © 2026 El-7areefa. All rights reserved.
+    </div>
+  </footer>
+</html>

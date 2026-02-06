@@ -1,0 +1,696 @@
+body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* HEADER  */
+.headerContainer {
+    background-color: #1a9f37;
+}
+.header {
+    /* position: sticky; */
+    /* top: 0; */
+    height: 80px;
+    background-color: #1a9f37;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 100px 0 100px;
+    max-width: 1300px;
+    margin: auto;
+}
+
+.headerLinks {
+    width: 50%;
+}
+
+.headerLinks{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+}
+
+.headerLinks a {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 50px;
+    transition: .3s;
+}
+
+.headerLinks a:hover {
+    background-color: #1A7FF9;
+}
+
+.logo img {
+    width: 150px;
+}
+/* END HEADER  */
+
+/* LANDING PAGE  */
+.landingPageContainer {
+    background-color: #1a9f37;
+    border-radius: 0 0 100px 100px;
+}
+.landingPage {
+    display: flex;
+    background-color: #1a9f37;
+    color: #fff;
+    padding: 100px 0;
+    max-width: 1300px;
+    margin: auto;
+}
+
+.landingPage .slogan {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 50px;
+}
+
+.landingPage .welcome {
+    font-size: x-large;
+    height: 10px;
+}
+
+.landingPage .description {
+    color: #fff;
+    width: 80%;
+    font-weight: 500;
+    
+}
+
+.searchBar {
+    position: relative;
+    margin-top: 100px;
+}
+
+.searchBar input {
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    width: 40%;
+    height: 50px;
+    font-size: large;
+    padding-left: 20px;
+}
+
+.searchBar input::placeholder {
+    font-size:medium;
+}
+
+.btn {
+    border-radius: 50px;
+    height: 52px;
+    border: none;
+    font-weight:600;
+    font-size: medium;
+    padding: 0 20px;
+    background-color: #EE626B;
+    color: #fff;
+    text-transform: uppercase;
+    transition: .3s;
+}
+
+.btn:hover {
+    background-color: #9E4147;
+    cursor: pointer;
+}
+
+.searchBar input {
+  height: 52px;
+  padding: 0 20px;
+  line-height: 52px;
+}
+
+.searchBar .searchBtn {
+  height: 52px;
+  padding: 0 25px;
+  line-height: 52px;
+}
+
+
+/* REMOVE or COMMENT THIS */
+/*
+input, textarea, button {
+  padding: 10px;
+  font-size: 16px;
+}
+*/
+
+.leftSide {
+    padding-top: 30px;
+    flex: 8;
+}
+
+.imageContainer {
+    flex: 4;
+}
+
+.imageContainer img {
+    width: 100%;
+    border-radius: 20px;
+}
+
+
+/* END LANDING PAGE  */
+
+/* TRENDING GAMES */
+.trendingContainer {
+    margin: auto;
+    max-width: 1300px;
+    margin-top: 100px;
+}
+
+.trendingHeader, .mostHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-items: center;
+    padding-bottom: 40px;
+    
+}
+
+.trendingHeader h1, .mostHeader h1, .categoryHeader h1 {
+    margin-top: 0;
+}
+
+.trendingContainer span, .mostContainer span, .categoryHeader span {
+    text-transform: uppercase;
+    color: #EE626B;
+    font-weight: 600;
+}
+
+.trendingCard, .mostCards, .categoryCards{
+    display: flex;
+    justify-content: space-between;
+}
+
+.trendingCard .card {
+    position: relative;
+}
+
+
+.trendingCard .card img {
+    border-radius: 20px;
+}
+
+.trendingCard .card .cardInfo {
+    position: absolute;
+    top: 200px;
+    width: 100%;
+    background-color: #EEEEEE;
+    border-radius: 0 0 20px 20px;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.trendingCard .card .cardName {
+    padding: 0 20px;
+}
+
+.trendingCard .cardName h3 {
+    margin-top: 0;
+}
+
+.trendingCard .cardName p {
+    color: gray;
+    margin-bottom: 0;
+}
+
+
+.trendingCard .cardInfo .icon img {
+    width: 50px;
+    transition: .3s;
+}
+
+.trendingCard .cardInfo .icon {
+    margin-right: 20px;
+}
+
+.trendingCard .cardInfo img:hover{
+    transform: scale(1.3);
+}
+
+/* END TRENDING GAMES */
+
+/* MOST PLAYED  */
+.cardImg img {
+    border-radius: 20px;
+}
+
+.mostCards .cardInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mostCards .cardInfo .genre {
+    margin-bottom: 0;
+    color: gray;
+}
+
+.mostContainer {
+    background-color: #EEEEEE;
+    margin-top: 200px;
+    padding: 50px;
+    border-radius: 100px;
+}
+
+.mostContainer .mostPlayed, .category {
+    max-width: 1300px;
+    margin: auto;
+}
+
+/* END MOST PLAYED  */
+
+/* CATEGORY GAMES  */
+
+.categoryContainer {
+    margin-top: 150px;
+}
+
+.category .categoryHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.category .card .cardImg{
+    position: relative;
+    top: -20px;
+}
+
+.category .card .genre {
+    background-color: #0171F9;
+    text-align: center;
+    color: #fff;
+    padding: 15px 0 30px 0;
+    font-size: large;
+    font-weight: 500;
+    border-radius: 20px 20px 0 0;
+}
+
+.category .categoryCards {
+    margin-top: 30px;
+}
+.card {
+    transition: .3s;
+}
+
+.category .card:hover {
+    transform: scale(1.05);
+}
+
+
+/* END CATEGORY GAMES  */
+
+/* FOOTER  */
+.footerContainer {
+    background-color: #0171F9;
+    height: 150px;
+    border-radius: 100px 100px 0 0;
+    margin-top: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.footer {
+    max-width: 1300px;
+    margin: auto;
+    text-align: center;
+    color: #fff;
+    font-weight: 500;
+    font-size: larger;
+}
+
+/* END FOOTER  */
+
+/* FORM  */
+.formContainer {
+    display: flex;
+    padding: 40px;
+    margin: auto;
+    justify-content: center;
+    max-width: 1300px;
+}
+
+.formContainer form {
+    background-color: #EEEEEE;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    width: 400px;
+    max-width: 400px;
+    padding: 20px;
+    border-radius: 20px;
+    height: 450px;
+}
+
+.formContainer form input, textarea {
+    outline: none;
+    border: none;
+    padding-left: 20px;
+    font-size: large;
+    /* width: 100%; */
+}
+
+.formContainer input {
+    height: 50px;
+    border-radius: 50px;
+}
+
+.formContainer textarea {
+    border-radius: 20px;
+    padding-top: 10px;
+    resize: none;
+}
+/* END FORM  */
+
+.yassin{
+    width: 250px;
+    height: 300px;
+    border-radius: 20px 20px 0 0;
+}
+
+form {
+  max-width: 400px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input, textarea, button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+
+/* CONTACT US FORM CUSTOM STYLE */
+.formContainer form {
+  background-color: #EEEEEE;
+}
+
+.formContainer input,
+.formContainer textarea {
+  font-size: 16px;
+}
+
+.trendingCard .card {
+  width: 250px;
+}
+
+.formContainer h2 {
+  margin-bottom: 5px;
+}
+
+.formContainer p {
+  margin-bottom: 20px;
+}
+
+.formContainer button {
+  margin-top: 10px;
+}
+
+.formContainer select {
+  font-size: 16px;
+  background-color: white;
+}
+
+.formContainer h2 {
+  margin-bottom: 5px;
+}
+
+.formContainer p {
+  margin-bottom: 20px;
+}
+
+#userEmail {
+  color: white;
+  font-size: 14px;
+  margin-left: 15px;
+  font-weight: 500;
+}
+
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 100px;
+}
+
+.searchBar input {
+  height: 52px;
+  width: 300px;
+  border-radius: 50px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding-left: 20px;
+}
+
+.searchBar .searchBtn {
+  height: 52px;
+  padding: 0 25px;
+}
+
+.fifa-card {
+  width: 350px;
+  height: 500px;
+  background: linear-gradient(135deg, gold, #b8860b);
+  border-radius: 20px;
+  display: flex;
+  padding: 20px;
+  color: #000;
+  font-family: 'Poppins', sans-serif;
+}
+
+.card-left {
+  width: 40%;
+  text-align: center;
+}
+
+.card-left img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.overall {
+  font-size: 48px;
+  margin: 0;
+}
+
+.position {
+  font-weight: bold;
+}
+
+.card-right {
+  width: 60%;
+  padding-left: 10px;
+}
+
+.stats p {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.search-results {
+  position: absolute;
+  top: 60px;
+  width: 300px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  overflow: hidden;
+  z-index: 100;
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-item:hover {
+  background: #f2f2f2;
+}
+
+.search-item img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.search-item .info {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-item .info span {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.search-item .info small {
+  font-size: 12px;
+  color: gray;
+}
+
+.no-results {
+  padding: 15px;
+  text-align: center;
+  color: gray;
+  font-size: 14px;
+}
+
+.players-page {
+  padding: 40px;
+  font-family: Poppins;
+}
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.player-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  cursor: pointer;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.player-card:hover {
+  transform: translateY(-5px);
+}
+
+.player-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* PLAYER CARD ACTIONS (VIEW / COMPARE) */
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.card-actions button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 20px;
+  background-color: #0171F9;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.card-actions button:hover {
+  background-color: #014db8;
+}
+
+/* PLAYER COMPARISON */
+.compare-page {
+  max-width: 1100px;
+  margin: auto;
+  padding: 40px;
+  text-align: center;
+}
+
+.compare-container {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 30px;
+  align-items: center;
+}
+
+.compare-card {
+  background: #eee;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.compare-card img {
+  width: 100%;
+  border-radius: 15px;
+}
+
+.compare-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  background: #f5f5f5;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.stat-row span {
+  width: 50px;
+}
+
+.stat-row strong {
+  color: #0171F9;
+}
+
+.winner {
+  color: #1a9f37;
+  font-weight: 700;
+}
+
+/* VIEW ALL PLAYERS BUTTON */
+.view-all-btn {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #0171F9, #1a9f37);
+  color: white;
+  font-weight: 600;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: 0.3s;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.view-all-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+}
+
+.rank-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: gold;
+  color: black;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.player-card {
+  position: relative;
+}

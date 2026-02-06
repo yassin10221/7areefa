@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Player Profile | El-7areefa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+
+<body>
+
+<header class="headerContainer">
+  <div class="header">
+    <a href="index.html" class="logo">
+      <img src="images/logo.png">
+    </a>
+    <div class="headerLinks">
+      <a href="index.html">Home</a>
+      <a href="contactUs.html">Contact Us</a>
+    </div>
+  </div>
+</header>
+
+<main class="formContainer">
+
+  <section class="fifa-card" id="card" style="display:none;">
+    <div class="card-left">
+      <h1 id="overall"></h1>
+      <p id="position"></p>
+      <img id="playerImage">
+    </div>
+
+    <div class="card-right">
+      <h2 id="name"></h2>
+
+      <div class="stats">
+        <p>PAC <span id="pace"></span></p>
+        <p>SHO <span id="shooting"></span></p>
+        <p>PAS <span id="passing"></span></p>
+        <p>DRI <span id="dribbling"></span></p>
+        <p>DEF <span id="defending"></span></p>
+        <p>PHY <span id="physical"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <p id="errorMsg" style="color:red; text-align:center;"></p>
+
+</main>
+
+<footer class="footerContainer">
+  <div class="footer">© 2026 El-7areefa</div>
+</footer>
+
+<script>
+  firebase.initializeApp({
+    apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+    authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+    projectId: "el-7areefa-ac2fb"
+  });
+
+  const db = firebase.firestore();
+
+  const params = new URLSearchParams(window.location.search);
+  const playerId = params.get("id");
+
+  if (!playerId) {
+    document.getElementById("errorMsg").innerText = "No player selected.";
+  } else {
+    db.collection("players").doc(playerId).get().then(doc => {
+      if (!doc.exists) {
+        document.getElementById("errorMsg").innerText = "Player not found.";
+        return;
+      }
+
+      const p = doc.data();
+      document.getElementById("card").style.display = "flex";
+
+      document.getElementById("name").innerText = p.name;
+      document.getElementById("overall").innerText = p.overall;
+      document.getElementById("position").innerText = p.position;
+      document.getElementById("playerImage").src = p.image;
+
+      document.getElementById("pace").innerText = p.pace ?? "-";
+      document.getElementById("shooting").innerText = p.shooting ?? "-";
+      document.getElementById("passing").innerText = p.passing ?? "-";
+      document.getElementById("dribbling").innerText = p.dribbling ?? "-";
+      document.getElementById("defending").innerText = p.defending ?? "-";
+      document.getElementById("physical").innerText = p.physical ?? "-";
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+
+      <!-- HEADER -->
+  <header class="headerContainer">
+    <div class="header">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="El-7areefa Logo" />
+      </a>
+      <div class="headerLinks">
+        <a href="index.html">Home</a>
+        <a href="contactUs.html">Contact Us</a>
+      </div>
+    </div>
+  </header>
+
+
+<main>
+  <section class="formContainer">
+  <form onsubmit="event.preventDefault(); login();">
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    <button class="btn" type="submit">Login</button>
+    <p>Don't have an account?
+      <a href="signin.html">Register</a>
+    </p>
+  </form>
+  </section>
+</main>
+
+<script>
+  // 🔴 SAME Firebase config you already used
+  const firebaseConfig = {
+    apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+    authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+    projectId: "el-7areefa-ac2fb"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  function login() {
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        alert("Login successful!");
+        window.location.href = "index.html";
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+  }
+</script>
+
+</body>
+
+
+<!-- FOOTER -->
+  <footer class="footerContainer">
+    <div class="footer">
+      Copyright © 2026 El-7areefa. All rights reserved.
+    </div>
+  </footer>
+</html>
