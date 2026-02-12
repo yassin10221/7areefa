@@ -62,9 +62,50 @@ const filter = document.getElementById("positionFilter");
 function loadRanking(position = "") {
   grid.innerHTML = "";
 
-  let query = db.collection("players")
-                .orderBy("overall", "desc")
-                .limit(20);
+  function loadRanking(position = "") {
+  grid.innerHTML = "";
+
+  let query = db.collection("players");
+
+  if (position) {
+    query = query.where("position", "==", position);
+  }
+
+  query.get().then(snapshot => {
+    let players = [];
+
+    snapshot.forEach(doc => {
+      const p = doc.data();
+
+      const finalScore = (p.overall * 2) + (p.votes || 0);
+
+      players.push({
+        id: doc.id,
+        ...p,
+        finalScore
+      });
+    });
+
+    // Sort by finalScore DESC
+    players.sort((a, b) => b.finalScore - a.finalScore);
+
+    let rank = 1;
+
+    players.slice(0, 20).forEach(p => {
+      grid.innerHTML += `
+        <div class="player-card" onclick="openPlayer('${p.id}')">
+          <span class="rank-badge">#${rank}</span>
+          <img src="${p.image}">
+          <h3>${p.name}</h3>
+          <p>${p.position} • ${p.overall}</p>
+          <p>⭐ Votes: ${p.votes || 0}</p>
+          <p><strong>Score: ${p.finalScore}</strong></p>
+        </div>
+      `;
+      rank++;
+    });
+  });
+}
 
   if (position) {
     query = query.where("position", "==", position);
