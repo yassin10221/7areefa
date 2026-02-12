@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Goal Counter | El-7areefa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+
+<body>
+
+<header class="headerContainer">
+  <div class="header">
+    <a href="index.html" class="logo">
+      <img src="logo.png">
+    </a>
+    <div class="headerLinks">
+      <a href="index.html">Home</a>
+      <a href="players.html">Players</a>
+      <a href="ranking.html">Ranking</a>
+      <a href="goals.html">Goal Counter</a>
+    </div>
+  </div>
+</header>
+
+<main class="players-page">
+
+  <h1>School Goal Counter</h1>
+
+  <!-- ADD GOAL FORM -->
+  <div class="goal-form">
+    <input type="text" id="playerName" placeholder="Player Name">
+    
+    <select id="matchType">
+      <option value="PE">PE</option>
+      <option value="Break">Break</option>
+      <option value="Dawry">Dawry</option>
+      <option value="Friendly">Friendly</option>
+    </select>
+
+    <button onclick="addGoal()">Add Goal ⚽</button>
+  </div>
+
+  <h2>Top Scorers</h2>
+  <div class="players-grid" id="goalGrid"></div>
+
+</main>
+
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+  authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+  projectId: "el-7areefa-ac2fb"
+});
+
+const db = firebase.firestore();
+const grid = document.getElementById("goalGrid");
+
+function addGoal() {
+  const name = document.getElementById("playerName").value.trim();
+  const type = document.getElementById("matchType").value;
+
+  if (!name) {
+    alert("Enter player name");
+    return;
+  }
+
+  db.collection("goals").add({
+    playerName: name,
+    matchType: type,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    document.getElementById("playerName").value = "";
+    loadGoals();
+  });
+}
+
+function loadGoals() {
+  grid.innerHTML = "Loading...";
+
+  db.collection("goals").get().then(snapshot => {
+    let goalCount = {};
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const name = data.playerName;
+
+      if (!goalCount[name]) {
+        goalCount[name] = 0;
+      }
+
+      goalCount[name]++;
+    });
+
+    let sorted = Object.entries(goalCount)
+      .sort((a, b) => b[1] - a[1]);
+
+    grid.innerHTML = "";
+
+    let rank = 1;
+
+    sorted.forEach(player => {
+      grid.innerHTML += `
+        <div class="player-card">
+          <span class="rank-badge">#${rank}</span>
+          <h3>${player[0]}</h3>
+          <p>⚽ Goals: ${player[1]}</p>
+        </div>
+      `;
+      rank++;
+    });
+  });
+}
+
+loadGoals();
+</script>
+
+</body>
+</html>
