@@ -37,6 +37,13 @@
 
     <div class="card-right">
       <h2 id="name"></h2>
+<button onclick="addGoalToPlayer()" class="btn" style="margin-bottom:10px;">
+  Add Goal ⚽
+</button>
+
+<p id="goalCount" style="font-weight:600; margin-bottom:15px;">
+  ⚽ Goals: 0
+</p>
 
       <div class="stats">
         <p>PAC <span id="pace"></span></p>
@@ -94,6 +101,28 @@
       document.getElementById("physical").innerText = p.physical ?? "-";
     });
   }
+  loadPlayerGoals();
+  // ===== GOAL SYSTEM =====
+
+function addGoalToPlayer() {
+  db.collection("goals").add({
+    playerId: playerId,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    loadPlayerGoals();
+  });
+}
+
+function loadPlayerGoals() {
+  db.collection("goals")
+    .where("playerId", "==", playerId)
+    .get()
+    .then(snapshot => {
+      document.getElementById("goalCount").innerText =
+        "⚽ Goals: " + snapshot.size;
+    });
+}
+
 </script>
 
 </body>
