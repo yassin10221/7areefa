@@ -60,10 +60,7 @@ const grid = document.getElementById("rankingGrid");
 const filter = document.getElementById("positionFilter");
 
 function loadRanking(position = "") {
-  grid.innerHTML = "";
-
-  function loadRanking(position = "") {
-  grid.innerHTML = "";
+  grid.innerHTML = "Loading...";
 
   let query = db.collection("players");
 
@@ -86,8 +83,10 @@ function loadRanking(position = "") {
       });
     });
 
-    // Sort by finalScore DESC
+    // Sort by Smart Score
     players.sort((a, b) => b.finalScore - a.finalScore);
+
+    grid.innerHTML = "";
 
     let rank = 1;
 
@@ -99,33 +98,8 @@ function loadRanking(position = "") {
           <h3>${p.name}</h3>
           <p>${p.position} • ${p.overall}</p>
           <p>⭐ Votes: ${p.votes || 0}</p>
-          <p><strong>Score: ${p.finalScore}</strong></p>
         </div>
       `;
-      rank++;
-    });
-  });
-}
-
-  if (position) {
-    query = query.where("position", "==", position);
-  }
-
-  query.get().then(snapshot => {
-    let rank = 1;
-
-    snapshot.forEach(doc => {
-      const p = doc.data();
-
-      grid.innerHTML += `
-        <div class="player-card" onclick="openPlayer('${doc.id}')">
-          <span class="rank-badge">#${rank}</span>
-          <img src="${p.image}">
-          <h3>${p.name}</h3>
-          <p>${p.position} • ${p.overall}</p>
-        </div>
-      `;
-
       rank++;
     });
   });
