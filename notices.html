@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notices | El-7areefa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+
+<body>
+
+<header class="headerContainer">
+  <div class="header">
+    <a href="index.html" class="logo">
+      <img src="logo.png">
+    </a>
+    <div class="headerLinks">
+      <a href="index.html">Home</a>
+      <a href="notices.html">Notices</a>
+    </div>
+  </div>
+</header>
+
+<main class="formContainer">
+
+  <h2 style="text-align:center; margin-bottom:20px;">🔔 Latest Notices</h2>
+
+  <div id="noticesContainer"></div>
+
+</main>
+
+<footer class="footerContainer">
+  <div class="footer">© 2026 El-7areefa</div>
+</footer>
+
+<script>
+
+  // Firebase config
+  firebase.initializeApp({
+    apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+    authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+    projectId: "el-7areefa-ac2fb"
+  });
+
+  const db = firebase.firestore();
+  const container = document.getElementById("noticesContainer");
+
+  // Real-time listener
+  db.collection("notifications")
+    .orderBy("createdAt", "desc")
+    .onSnapshot(snapshot => {
+
+      container.innerHTML = "";
+
+      snapshot.forEach(doc => {
+        const n = doc.data();
+
+        container.innerHTML += `
+          <div class="player-card" style="margin-bottom:15px;">
+            <h3>${n.title}</h3>
+            <p>${n.message}</p>
+          </div>
+        `;
+      });
+
+    });
+
+</script>
+
+</body>
+</html>
