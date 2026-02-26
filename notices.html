@@ -3,12 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Notices | El-7areefa</title>
-  <div class="players-page">
-  <h1>🔔 Latest Notices</h1>
-
-  <!-- THIS WAS MISSING -->
-  <div class="players-grid" id="noticeGrid"></div>
-</div>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -23,7 +17,7 @@
 <header class="headerContainer">
   <div class="header">
     <a href="index.html" class="logo">
-      <img src="logo.png">
+      <img src="logo.png" alt="El-7areefa">
     </a>
     <div class="headerLinks">
       <a href="index.html">Home</a>
@@ -32,54 +26,49 @@
   </div>
 </header>
 
-<main class="formContainer">
-
+<main class="players-page">
   <h2 style="text-align:center; margin-bottom:20px;">🔔 Latest Notices</h2>
 
-  <div id="noticesContainer"></div>
-
+  <div class="players-grid" id="noticeGrid"></div>
 </main>
 
 <footer class="footerContainer">
   <div class="footer">© 2026 El-7areefa</div>
 </footer>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
 <script>
-firebase.initializeApp({
-  apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
-  authDomain: "el-7areefa-ac2fb.firebaseapp.com",
-  projectId: "el-7areefa-ac2fb"
-});
-
-const db = firebase.firestore();
-const grid = document.getElementById("noticeGrid");
-
-db.collection("notifications")
-  .get()
-  .then(snapshot => {
-    if (snapshot.empty) {
-      grid.innerHTML = "<p>No notices yet.</p>";
-      return;
-    }
-
-    snapshot.forEach(doc => {
-      const n = doc.data();
-
-      grid.innerHTML += `
-        <div class="player-card">
-          <h3>${n.title}</h3>
-          <p>${n.message}</p>
-        </div>
-      `;
-    });
-  })
-  .catch(err => {
-    grid.innerHTML = "<p>Error loading notices.</p>";
-    console.error(err);
+  firebase.initializeApp({
+    apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+    authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+    projectId: "el-7areefa-ac2fb"
   });
+
+  const db = firebase.firestore();
+  const grid = document.getElementById("noticeGrid");
+
+  db.collection("notifications")
+    .get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        grid.innerHTML = "<p style='text-align:center;'>No notices yet.</p>";
+        return;
+      }
+
+      snapshot.forEach(doc => {
+        const n = doc.data();
+
+        grid.innerHTML += `
+          <div class="player-card">
+            <h3>${n.title}</h3>
+            <p>${n.message}</p>
+          </div>
+        `;
+      });
+    })
+    .catch(err => {
+      grid.innerHTML = "<p>Error loading notices.</p>";
+      console.error(err);
+    });
 </script>
 
 </body>
