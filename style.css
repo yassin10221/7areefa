@@ -43,7 +43,7 @@ body {
 }
 
 .headerLinks a:hover {
-    background-color: #1A7FF9;
+    background-color: #1a9f37;
 }
 
 .logo img {
@@ -312,7 +312,7 @@ input, textarea, button {
 
 /* FOOTER  */
 .footerContainer {
-    background-color: #0171F9;
+    background-color:#1a9f37;
     height: 150px;
     border-radius: 100px 100px 0 0;
     margin-top: 100px;
