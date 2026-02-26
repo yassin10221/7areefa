@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Notices | El-7areefa</title>
+  <div class="players-page">
+  <h1>🔔 Latest Notices</h1>
+
+  <!-- THIS WAS MISSING -->
+  <div class="players-grid" id="noticeGrid"></div>
+</div>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -38,38 +44,42 @@
   <div class="footer">© 2026 El-7areefa</div>
 </footer>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
 <script>
+firebase.initializeApp({
+  apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+  authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+  projectId: "el-7areefa-ac2fb"
+});
 
-  // Firebase config
-  firebase.initializeApp({
-    apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
-    authDomain: "el-7areefa-ac2fb.firebaseapp.com",
-    projectId: "el-7areefa-ac2fb"
-  });
+const db = firebase.firestore();
+const grid = document.getElementById("noticeGrid");
 
-  const db = firebase.firestore();
-  const container = document.getElementById("noticesContainer");
+db.collection("notifications")
+  .get()
+  .then(snapshot => {
+    if (snapshot.empty) {
+      grid.innerHTML = "<p>No notices yet.</p>";
+      return;
+    }
 
-  // Real-time listener
-  db.collection("notifications")
-    .orderBy("createdAt", "desc")
-    .onSnapshot(snapshot => {
+    snapshot.forEach(doc => {
+      const n = doc.data();
 
-      container.innerHTML = "";
-
-      snapshot.forEach(doc => {
-        const n = doc.data();
-
-        container.innerHTML += `
-          <div class="player-card" style="margin-bottom:15px;">
-            <h3>${n.title}</h3>
-            <p>${n.message}</p>
-          </div>
-        `;
-      });
-
+      grid.innerHTML += `
+        <div class="player-card">
+          <h3>${n.title}</h3>
+          <p>${n.message}</p>
+        </div>
+      `;
     });
-
+  })
+  .catch(err => {
+    grid.innerHTML = "<p>Error loading notices.</p>";
+    console.error(err);
+  });
 </script>
 
 </body>
