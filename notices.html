@@ -37,31 +37,38 @@
 </footer>
 
 <script>
-function addGoal(playerName) {
-  const now = firebase.firestore.FieldValue.serverTimestamp();
+firebase.initializeApp({
+  apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+  authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+  projectId: "el-7areefa-ac2fb"
+});
 
-  // 1️⃣ Add goal
-  db.collection("goals").add({
-    playerId: playerName,
-    createdAt: now
-  })
-  .then(() => {
+const db = firebase.firestore();
+const grid = document.getElementById("noticeGrid");
 
-    // 2️⃣ Auto-add notification
-    return db.collection("notifications").add({
-      title: "⚽ Goal Scored!",
-      message: `${playerName} scored a new goal!`,
-      createdAt: now
+db.collection("notifications")
+  .orderBy("createdAt", "desc")
+  .get()
+  .then(snapshot => {
+    if (snapshot.empty) {
+      grid.innerHTML = "<p>No notices yet.</p>";
+      return;
+    }
+
+    snapshot.forEach(doc => {
+      const n = doc.data();
+      grid.innerHTML += `
+        <div class="player-card">
+          <h3>${n.title}</h3>
+          <p>${n.message}</p>
+        </div>
+      `;
     });
-
-  })
-  .then(() => {
-    console.log("Goal + notification added");
   })
   .catch(err => {
-    console.error("Error:", err);
+    console.error(err);
+    grid.innerHTML = "<p>Error loading notices.</p>";
   });
-}
 </script>
 
 </body>
