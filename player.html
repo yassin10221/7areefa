@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 </head>
@@ -22,6 +23,7 @@
     <div class="headerLinks">
       <a href="index.html">Home</a>
       <a href="contactUs.html">Contact Us</a>
+      <a href="notices.html">Notices</a>
     </div>
   </div>
 </header>
@@ -37,13 +39,14 @@
 
     <div class="card-right">
       <h2 id="name"></h2>
-<button onclick="addGoalToPlayer()" class="btn" style="margin-bottom:10px;">
-  Add Goal ⚽
-</button>
 
-<p id="goalCount" style="font-weight:600; margin-bottom:15px;">
-  ⚽ Goals: 0
-</p>
+      <button onclick="addGoalToPlayer()" class="btn" style="margin-bottom:10px;">
+        Add Goal ⚽
+      </button>
+
+      <p id="goalCount" style="font-weight:600; margin-bottom:15px;">
+        ⚽ Goals: 0
+      </p>
 
       <div class="stats">
         <p>PAC <span id="pace"></span></p>
@@ -65,64 +68,85 @@
 </footer>
 
 <script>
-  firebase.initializeApp({
-    apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
-    authDomain: "el-7areefa-ac2fb.firebaseapp.com",
-    projectId: "el-7areefa-ac2fb"
-  });
+/* 🔥 Firebase Init */
+firebase.initializeApp({
+  apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+  authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+  projectId: "el-7areefa-ac2fb"
+});
 
-  const db = firebase.firestore();
+const db = firebase.firestore();
 
-  const params = new URLSearchParams(window.location.search);
-  const playerId = params.get("id");
+/* 🔎 Get player id */
+const params = new URLSearchParams(window.location.search);
+const playerId = params.get("id");
 
-  if (!playerId) {
-    document.getElementById("errorMsg").innerText = "No player selected.";
-  } else {
-    db.collection("players").doc(playerId).get().then(doc => {
-      if (!doc.exists) {
-        document.getElementById("errorMsg").innerText = "Player not found.";
-        return;
-      }
+if (!playerId) {
+  document.getElementById("errorMsg").innerText = "No player selected.";
+} else {
+  loadPlayer();
+}
 
-      const p = doc.data();
-      document.getElementById("card").style.display = "flex";
+/* 👤 Load player */
+function loadPlayer() {
+  db.collection("players").doc(playerId).get().then(doc => {
+    if (!doc.exists) {
+      document.getElementById("errorMsg").innerText = "Player not found.";
+      return;
+    }
 
-      document.getElementById("name").innerText = p.name;
-      document.getElementById("overall").innerText = p.overall;
-      document.getElementById("position").innerText = p.position;
-      document.getElementById("playerImage").src = p.image;
+    const p = doc.data();
+    document.getElementById("card").style.display = "flex";
+    document.getElementById("name").innerText = p.name;
+    document.getElementById("overall").innerText = p.overall;
+    document.getElementById("position").innerText = p.position;
+    document.getElementById("playerImage").src = p.image;
 
-      document.getElementById("pace").innerText = p.pace ?? "-";
-      document.getElementById("shooting").innerText = p.shooting ?? "-";
-      document.getElementById("passing").innerText = p.passing ?? "-";
-      document.getElementById("dribbling").innerText = p.dribbling ?? "-";
-      document.getElementById("defending").innerText = p.defending ?? "-";
-      document.getElementById("physical").innerText = p.physical ?? "-";
-    });
-  }
-  loadPlayerGoals();
-  // ===== GOAL SYSTEM =====
+    document.getElementById("pace").innerText = p.pace ?? "-";
+    document.getElementById("shooting").innerText = p.shooting ?? "-";
+    document.getElementById("passing").innerText = p.passing ?? "-";
+    document.getElementById("dribbling").innerText = p.dribbling ?? "-";
+    document.getElementById("defending").innerText = p.defending ?? "-";
+    document.getElementById("physical").innerText = p.physical ?? "-";
 
-function addGoalToPlayer() {
-  db.collection("goals").add({
-    playerId: playerId,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(() => {
-    loadPlayerGoals();
+    listenToGoals();
   });
 }
 
-function loadPlayerGoals() {
+/* ⚽ Live goal counter */
+function listenToGoals() {
   db.collection("goals")
     .where("playerId", "==", playerId)
-    .get()
-    .then(snapshot => {
+    .onSnapshot(snapshot => {
       document.getElementById("goalCount").innerText =
         "⚽ Goals: " + snapshot.size;
     });
 }
 
+/* ➕ Add goal + notice */
+function addGoalToPlayer() {
+  const playerName = document.getElementById("name").innerText;
+
+  db.collection("goals").add({
+    playerId: playerId,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  })
+  .then(() => {
+    return db.collection("notifications").add({
+      playerId: playerId,
+      title: "⚽ Goal Scored!",
+      message: playerName + " scored a goal",
+      type: "goal",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  })
+  .then(() => {
+    console.log("Goal + notice added successfully");
+  })
+  .catch(err => {
+    console.error("Error:", err);
+  });
+}
 </script>
 
 </body>
