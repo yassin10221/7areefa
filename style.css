@@ -694,3 +694,8 @@ input, textarea, button {
 .player-card {
   position: relative;
 }
+
+.upperbtn:hover {
+    background-color: #9E4147;
+    cursor: pointer;
+}
