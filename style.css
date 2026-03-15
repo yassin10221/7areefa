@@ -696,8 +696,15 @@ input, textarea, button {
 }
 
 .upperbtn:hover {
-    background-color: #80ff00;
+    background-color: #009a00;
     cursor: pointer;
     border-radius: 50px;
     border: none;
+}
+
+.upperbtn {
+    border-radius: 50px;
+    border: none;
+    background-color: #1a9f37;
+    color: white;
 }
