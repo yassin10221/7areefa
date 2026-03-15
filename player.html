@@ -21,9 +21,9 @@
       <img src="logo.png">
     </a>
     <div class="headerLinks">
-      <a class="upperbtn" href="index.html">Home</a>
-      <a class="upperbtn" href="contactUs.html">Contact Us</a>
-      <a class="upperbtn" href="notices.html">Notices</a>
+      <a href="index.html"><button class="upperbtn">Home</button></a>
+      <a href="contactUs.html"><button class="upperbtn">Contact Us</button></a>
+      <a href="notices.html"><button class="upperbtn">Notices</button></a>
     </div>
   </div>
 </header>
@@ -48,14 +48,7 @@
         ⚽ Goals: 0
       </p>
 
-      <div class="stats">
-        <p>PAC <span id="pace"></span></p>
-        <p>SHO <span id="shooting"></span></p>
-        <p>PAS <span id="passing"></span></p>
-        <p>DRI <span id="dribbling"></span></p>
-        <p>DEF <span id="defending"></span></p>
-        <p>PHY <span id="physical"></span></p>
-      </div>
+      <div class="stats" id="statsContainer"></div>
     </div>
   </section>
 
@@ -96,19 +89,30 @@ function loadPlayer() {
     }
 
     const p = doc.data();
-    document.getElementById("card").style.display = "flex";
-    document.getElementById("name").innerText = p.name;
-    document.getElementById("overall").innerText = p.overall;
-    document.getElementById("position").innerText = p.position;
-    document.getElementById("playerImage").src = p.image;
+const statsBox = document.getElementById("statsContainer");
+statsBox.innerHTML = "";
 
-    document.getElementById("pace").innerText = p.pace ?? "-";
-    document.getElementById("shooting").innerText = p.shooting ?? "-";
-    document.getElementById("passing").innerText = p.passing ?? "-";
-    document.getElementById("dribbling").innerText = p.dribbling ?? "-";
-    document.getElementById("defending").innerText = p.defending ?? "-";
-    document.getElementById("physical").innerText = p.physical ?? "-";
-
+if (p.position === "GK") {
+  // 🧤 GOALKEEPER STATS
+  statsBox.innerHTML = `
+    <p>DIV <span>${p.diving ?? "-"}</span></p>
+    <p>HAN <span>${p.handling ?? "-"}</span></p>
+    <p>KIC <span>${p.kicking ?? "-"}</span></p>
+    <p>REF <span>${p.reflexes ?? "-"}</span></p>
+    <p>SPD <span>${p.speed ?? "-"}</span></p>
+    <p>POS <span>${p.positioning ?? "-"}</span></p>
+  `;
+} else {
+  // ⚽ OUTFIELD PLAYER STATS
+  statsBox.innerHTML = `
+    <p>PAC <span>${p.pace ?? "-"}</span></p>
+    <p>SHO <span>${p.shooting ?? "-"}</span></p>
+    <p>PAS <span>${p.passing ?? "-"}</span></p>
+    <p>DRI <span>${p.dribbling ?? "-"}</span></p>
+    <p>DEF <span>${p.defending ?? "-"}</span></p>
+    <p>PHY <span>${p.physical ?? "-"}</span></p>
+  `;
+}
     listenToGoals();
   });
 }
