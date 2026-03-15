@@ -89,33 +89,44 @@ function loadPlayer() {
     }
 
     const p = doc.data();
-const statsBox = document.getElementById("statsContainer");
-statsBox.innerHTML = "";
 
-if (p.position === "GK") {
-  // 🧤 GOALKEEPER STATS
-  statsBox.innerHTML = `
-    <p>DIV <span>${p.diving ?? "-"}</span></p>
-    <p>HAN <span>${p.handling ?? "-"}</span></p>
-    <p>KIC <span>${p.kicking ?? "-"}</span></p>
-    <p>REF <span>${p.reflexes ?? "-"}</span></p>
-    <p>SPD <span>${p.speed ?? "-"}</span></p>
-    <p>POS <span>${p.positioning ?? "-"}</span></p>
-  `;
-} else {
-  // ⚽ OUTFIELD PLAYER STATS
-  statsBox.innerHTML = `
-    <p>PAC <span>${p.pace ?? "-"}</span></p>
-    <p>SHO <span>${p.shooting ?? "-"}</span></p>
-    <p>PAS <span>${p.passing ?? "-"}</span></p>
-    <p>DRI <span>${p.dribbling ?? "-"}</span></p>
-    <p>DEF <span>${p.defending ?? "-"}</span></p>
-    <p>PHY <span>${p.physical ?? "-"}</span></p>
-  `;
-}
+    // 🔓 Show card
+    document.getElementById("card").style.display = "flex";
+
+    // 👤 Basic info
+    document.getElementById("name").innerText = p.name;
+    document.getElementById("overall").innerText = p.overall;
+    document.getElementById("position").innerText = p.position;
+    document.getElementById("playerImage").src = p.image;
+
+    // 📊 Stats
+    const statsBox = document.getElementById("statsContainer");
+    statsBox.innerHTML = "";
+
+    if (p.position === "GK") {
+      statsBox.innerHTML = `
+        <p>DIV <span>${p.diving ?? "-"}</span></p>
+        <p>HAN <span>${p.handling ?? "-"}</span></p>
+        <p>KIC <span>${p.kicking ?? "-"}</span></p>
+        <p>REF <span>${p.reflexes ?? "-"}</span></p>
+        <p>SPD <span>${p.speed ?? "-"}</span></p>
+        <p>POS <span>${p.positioning ?? "-"}</span></p>
+      `;
+    } else {
+      statsBox.innerHTML = `
+        <p>PAC <span>${p.pace ?? "-"}</span></p>
+        <p>SHO <span>${p.shooting ?? "-"}</span></p>
+        <p>PAS <span>${p.passing ?? "-"}</span></p>
+        <p>DRI <span>${p.dribbling ?? "-"}</span></p>
+        <p>DEF <span>${p.defending ?? "-"}</span></p>
+        <p>PHY <span>${p.physical ?? "-"}</span></p>
+      `;
+    }
+
     listenToGoals();
   });
 }
+
 
 /* ⚽ Live goal counter */
 function listenToGoals() {
