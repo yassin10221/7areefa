@@ -698,4 +698,6 @@ input, textarea, button {
 .upperbtn:hover {
     background-color: #80ff00;
     cursor: pointer;
+    border-radius: 50px;
+    border: none;
 }
