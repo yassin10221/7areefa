@@ -11,6 +11,7 @@
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 </head>
 
 <body>
@@ -40,9 +41,9 @@
     <div class="card-right">
       <h2 id="name"></h2>
 
-      <button onclick="addGoalToPlayer()" class="btn" style="margin-bottom:10px;">
-        Add Goal ⚽
-      </button>
+<button id="addGoalBtn" onclick="addGoalToPlayer()" class="btn" style="display:none;">
+  Add Goal ⚽
+</button>
 
       <p id="goalCount" style="font-weight:600; margin-bottom:15px;">
         ⚽ Goals: 0
@@ -61,7 +62,6 @@
 </footer>
 
 <script>
-/* 🔥 Firebase Init */
 firebase.initializeApp({
   apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
   authDomain: "el-7areefa-ac2fb.firebaseapp.com",
@@ -69,6 +69,24 @@ firebase.initializeApp({
 });
 
 const db = firebase.firestore();
+const auth = firebase.auth();
+
+let isAdmin = false;
+
+/* ✅ Check admin */
+auth.onAuthStateChanged(user => {
+  if (!user) return;
+
+  db.collection("admins").doc(user.uid).get().then(doc => {
+    if (doc.exists) {
+      isAdmin = true;
+      document.getElementById("addGoalBtn").style.display = "block";
+      console.log("✅ Admin detected");
+    } else {
+      console.log("❌ Not admin");
+    }
+  });
+});
 
 /* 🔎 Get player id */
 const params = new URLSearchParams(window.location.search);
@@ -90,24 +108,19 @@ function loadPlayer() {
 
     const p = doc.data();
 
-    // 🔓 Show card
     document.getElementById("card").style.display = "flex";
-
-    // 👤 Basic info
     document.getElementById("name").innerText = p.name;
     document.getElementById("overall").innerText = p.overall;
     document.getElementById("position").innerText = p.position;
     document.getElementById("playerImage").src = p.image;
 
-    // 📊 Stats
     const statsBox = document.getElementById("statsContainer");
-    statsBox.innerHTML = "";
 
     if (p.position === "GK") {
       statsBox.innerHTML = `
         <p>DIV <span>${p.diving ?? "-"}</span></p>
         <p>HAN <span>${p.handling ?? "-"}</span></p>
-        <p>KIC <span>${p.kick ?? "-"}</span></p>
+        <p>KIC <span>${p.kicking ?? "-"}</span></p>
         <p>REF <span>${p.reflexes ?? "-"}</span></p>
         <p>SPD <span>${p.speed ?? "-"}</span></p>
         <p>POS <span>${p.positioning ?? "-"}</span></p>
@@ -127,7 +140,6 @@ function loadPlayer() {
   });
 }
 
-
 /* ⚽ Live goal counter */
 function listenToGoals() {
   db.collection("goals")
@@ -138,15 +150,19 @@ function listenToGoals() {
     });
 }
 
-/* ➕ Add goal + notice */
+/* 🔒 Add goal (ADMIN ONLY) */
 function addGoalToPlayer() {
+  if (!isAdmin) {
+    alert("Admins only");
+    return;
+  }
+
   const playerName = document.getElementById("name").innerText;
 
   db.collection("goals").add({
     playerId: playerId,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  })
-  .then(() => {
+  }).then(() => {
     return db.collection("notifications").add({
       playerId: playerId,
       title: "⚽ Goal Scored!",
@@ -154,12 +170,6 @@ function addGoalToPlayer() {
       type: "goal",
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-  })
-  .then(() => {
-    console.log("Goal + notice added successfully");
-  })
-  .catch(err => {
-    console.error("Error:", err);
   });
 }
 </script>

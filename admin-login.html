@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login | El-7areefa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+
+<body>
+
+<h2 style="text-align:center;margin-top:40px;">Admin Login</h2>
+
+<div style="max-width:300px;margin:40px auto;">
+  <input id="email" placeholder="Email" style="width:100%;margin-bottom:10px;">
+  <input id="password" type="password" placeholder="Password" style="width:100%;margin-bottom:10px;">
+  <button onclick="login()" class="btn" style="width:100%;">Login</button>
+  <p id="msg" style="color:red;text-align:center;"></p>
+</div>
+
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+  authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+  projectId: "el-7areefa-ac2fb"
+});
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+function login() {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
+
+  auth.signInWithEmailAndPassword(email, pass)
+    .then(cred => {
+      return db.collection("admins").doc(cred.user.uid).get();
+    })
+    .then(doc => {
+      if (!doc.exists) {
+        auth.signOut();
+        document.getElementById("msg").innerText = "Not admin";
+      } else {
+        window.location.href = "index.html";
+      }
+    })
+    .catch(err => {
+      document.getElementById("msg").innerText = err.message;
+    });
+}
+</script>
+
+</body>
+</html>

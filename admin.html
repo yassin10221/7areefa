@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | El-7areefa</title>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+  <style>
+    body { font-family: Arial; padding:20px; background:#111; color:white; }
+    input, button { margin:5px; padding:10px; }
+    .player { border:1px solid #444; padding:10px; margin:10px 0; }
+  </style>
+</head>
+<body>
+
+<h1>⚙️ Admin Dashboard</h1>
+
+<div id="adminPanel" style="display:none;">
+
+  <h2>➕ Add Player</h2>
+  <input id="name" placeholder="Name">
+  <input id="position" placeholder="Position (GK, ST...)">
+  <input id="overall" placeholder="Overall">
+  <button onclick="addPlayer()">Add Player</button>
+
+  <h2>👥 Players</h2>
+  <div id="playersList"></div>
+
+</div>
+
+<p id="error"></p>
+
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyA4yfl48U9agGiK_tGhnNmvBV7qZu47NzE",
+  authDomain: "el-7areefa-ac2fb.firebaseapp.com",
+  projectId: "el-7areefa-ac2fb"
+});
+
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+let isAdmin = false;
+
+/* 🔒 CHECK ADMIN */
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    document.getElementById("error").innerText = "Login first";
+    return;
+  }
+
+  db.collection("admins").doc(user.uid).get().then(doc => {
+    if (doc.exists) {
+      isAdmin = true;
+      document.getElementById("adminPanel").style.display = "block";
+      loadPlayers();
+    } else {
+      document.getElementById("error").innerText = "Not admin ❌";
+    }
+  });
+});
+
+/* ➕ ADD PLAYER */
+function addPlayer() {
+  if (!isAdmin) return;
+
+  const name = document.getElementById("name").value;
+  const position = document.getElementById("position").value;
+  const overall = Number(document.getElementById("overall").value);
+
+  db.collection("players").add({
+    name,
+    position,
+    overall,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    alert("Player added ✅");
+  });
+}
+
+/* 📥 LOAD PLAYERS */
+function loadPlayers() {
+  db.collection("players").onSnapshot(snapshot => {
+    const container = document.getElementById("playersList");
+    container.innerHTML = "";
+
+    snapshot.forEach(doc => {
+      const p = doc.data();
+
+      container.innerHTML += `
+        <div class="player">
+          <b>${p.name}</b> (${p.position}) - ${p.overall}
+
+          <br>
+
+          <button onclick="addGoal('${doc.id}', '${p.name}')">⚽ Goal</button>
+          <button onclick="deletePlayer('${doc.id}')">❌ Delete</button>
+        </div>
+      `;
+    });
+  });
+}
+
+/* ⚽ ADD GOAL */
+function addGoal(playerId, playerName) {
+  if (!isAdmin) return;
+
+  db.collection("goals").add({
+    playerId: playerId,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    return db.collection("notifications").add({
+      playerId: playerId,
+      title: "⚽ Goal Scored!",
+      message: playerName + " scored a goal",
+      type: "goal",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  });
+}
+
+/* ❌ DELETE PLAYER */
+function deletePlayer(id) {
+  if (!isAdmin) return;
+
+  db.collection("players").doc(id).delete().then(() => {
+    alert("Deleted ❌");
+  });
+}
+</script>
+
+</body>
+</html>
